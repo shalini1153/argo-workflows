@@ -359,6 +359,8 @@ class WorkflowServiceApi(object):
                     'name_filter',
                     'created_after',
                     'finished_before',
+                    'sort',
+                    'order_by',
                 ],
                 'required': [
                     'namespace',
@@ -406,6 +408,10 @@ class WorkflowServiceApi(object):
                         (str,),
                     'finished_before':
                         (str,),
+                    'sort':
+                        (str,),
+                    'order_by':
+                        (str,),
                 },
                 'attribute_map': {
                     'namespace': 'namespace',
@@ -423,6 +429,8 @@ class WorkflowServiceApi(object):
                     'name_filter': 'nameFilter',
                     'created_after': 'createdAfter',
                     'finished_before': 'finishedBefore',
+                    'sort': 'sort',
+                    'order_by': 'orderBy',
                 },
                 'location_map': {
                     'namespace': 'path',
@@ -440,6 +448,8 @@ class WorkflowServiceApi(object):
                     'name_filter': 'query',
                     'created_after': 'query',
                     'finished_before': 'query',
+                    'sort': 'query',
+                    'order_by': 'query',
                 },
                 'collection_format_map': {
                 }
@@ -1786,6 +1796,8 @@ class WorkflowServiceApi(object):
             name_filter (str): Filter type used for name filtering. Exact | Contains | Prefix. Default to Exact.. [optional]
             created_after (str): [optional]
             finished_before (str): [optional]
+            sort (str): [optional]
+            order_by (str): [optional]
             _return_http_data_only (bool): response data without head status
                 code and headers. Default is True.
             _preload_content (bool): if False, the urllib3.HTTPResponse object

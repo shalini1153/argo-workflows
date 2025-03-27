@@ -58051,6 +58051,8 @@ with argo_workflows.ApiClient(configuration) as api_client:
     name_filter = "nameFilter_example" # str | Filter type used for name filtering. Exact | Contains | Prefix. Default to Exact. (optional)
     created_after = "createdAfter_example" # str |  (optional)
     finished_before = "finishedBefore_example" # str |  (optional)
+    sort = "sort_example" # str |  (optional)
+    order_by = "orderBy_example" # str |  (optional)
 
     # example passing only required values which don't have defaults set
     try:
@@ -58062,7 +58064,7 @@ with argo_workflows.ApiClient(configuration) as api_client:
     # example passing only required values which don't have defaults set
     # and optional values
     try:
-        api_response = api_instance.list_workflows(namespace, list_options_label_selector=list_options_label_selector, list_options_field_selector=list_options_field_selector, list_options_watch=list_options_watch, list_options_allow_watch_bookmarks=list_options_allow_watch_bookmarks, list_options_resource_version=list_options_resource_version, list_options_resource_version_match=list_options_resource_version_match, list_options_timeout_seconds=list_options_timeout_seconds, list_options_limit=list_options_limit, list_options_continue=list_options_continue, list_options_send_initial_events=list_options_send_initial_events, fields=fields, name_filter=name_filter, created_after=created_after, finished_before=finished_before)
+        api_response = api_instance.list_workflows(namespace, list_options_label_selector=list_options_label_selector, list_options_field_selector=list_options_field_selector, list_options_watch=list_options_watch, list_options_allow_watch_bookmarks=list_options_allow_watch_bookmarks, list_options_resource_version=list_options_resource_version, list_options_resource_version_match=list_options_resource_version_match, list_options_timeout_seconds=list_options_timeout_seconds, list_options_limit=list_options_limit, list_options_continue=list_options_continue, list_options_send_initial_events=list_options_send_initial_events, fields=fields, name_filter=name_filter, created_after=created_after, finished_before=finished_before, sort=sort, order_by=order_by)
         pprint(api_response)
     except argo_workflows.ApiException as e:
         print("Exception when calling WorkflowServiceApi->list_workflows: %s\n" % e)
@@ -58088,6 +58090,8 @@ Name | Type | Description  | Notes
  **name_filter** | **str**| Filter type used for name filtering. Exact | Contains | Prefix. Default to Exact. | [optional]
  **created_after** | **str**|  | [optional]
  **finished_before** | **str**|  | [optional]
+ **sort** | **str**|  | [optional]
+ **order_by** | **str**|  | [optional]
 
 ### Return type
 

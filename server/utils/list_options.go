@@ -21,6 +21,7 @@ type ListOptions struct {
 	Limit, Offset                int
 	ShowRemainingItemCount       bool
 	StartedAtAscending           bool
+	Sort, OrderBy                string
 }
 
 func (l ListOptions) WithLimit(limit int) ListOptions {
@@ -53,7 +54,7 @@ func (l ListOptions) WithStartedAtAscending(ascending bool) ListOptions {
 	return l
 }
 
-func BuildListOptions(options metav1.ListOptions, ns, namePrefix, nameFilter, createdAfter, finishedBefore string) (ListOptions, error) {
+func BuildListOptions(options metav1.ListOptions, ns, namePrefix, nameFilter, createdAfter, finishedBefore string, sort string, orderBy string) (ListOptions, error) {
 	if options.Continue == "" {
 		options.Continue = "0"
 	}
@@ -150,5 +151,7 @@ func BuildListOptions(options metav1.ListOptions, ns, namePrefix, nameFilter, cr
 		Limit:                  limit,
 		Offset:                 offset,
 		ShowRemainingItemCount: showRemainingItemCount,
+		Sort:                   sort,
+		OrderBy:                orderBy,
 	}, nil
 }

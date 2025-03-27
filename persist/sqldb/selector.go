@@ -30,8 +30,15 @@ func BuildArchivedWorkflowSelector(selector db.Selector, tableName, labelTableNa
 		options.Limit = -1
 		options.Offset = -1
 	}
+
+	orderby := "startedat desc"
+
+	if options.Sort != "" {
+		orderby = options.Sort + " " + options.OrderBy
+	}
+
 	return selector.
-		OrderBy("-startedat").
+		OrderBy(orderby).
 		Limit(options.Limit).
 		Offset(options.Offset), nil
 }
@@ -90,8 +97,14 @@ func BuildWorkflowSelector(in string, inArgs []any, tableName, labelTableName st
 	if count {
 		return out, outArgs, nil
 	}
-	if options.StartedAtAscending {
+
+	/*if options.StartedAtAscending {
 		out += " order by startedat asc"
+	} else {
+		out += " order by startedat desc"
+	}*/
+	if options.Sort != "" {
+		out += " order by " + options.Sort + " " + options.OrderBy
 	} else {
 		out += " order by startedat desc"
 	}

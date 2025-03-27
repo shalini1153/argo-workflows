@@ -37,6 +37,8 @@ message WorkflowListRequest {
   string nameFilter = 4;
   string createdAfter = 5;
   string finishedBefore = 6;
+  string sort = 7;
+  string orderBy = 8;
 }
 
 message WorkflowResubmitRequest {

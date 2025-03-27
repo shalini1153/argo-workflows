@@ -10,7 +10,7 @@ import (
 )
 
 type WorkflowLister interface {
-	ListWorkflows(ctx context.Context, namespace, nameFilter, createdAfter, finishedBefore string, listOptions metav1.ListOptions) (*wfv1.WorkflowList, error)
+	ListWorkflows(ctx context.Context, namespace, nameFilter, createdAfter, finishedBefore string, sort string, orderBy string, listOptions metav1.ListOptions) (*wfv1.WorkflowList, error)
 	CountWorkflows(ctx context.Context, namespace, nameFilter, createdAfter, finishedBefore string, listOptions metav1.ListOptions) (int64, error)
 }
 
@@ -24,7 +24,7 @@ func NewKubeLister(wfClient versioned.Interface) WorkflowLister {
 	return &kubeLister{wfClient: wfClient}
 }
 
-func (k *kubeLister) ListWorkflows(ctx context.Context, namespace, nameFilter, createdAfter, finishedBefore string, listOptions metav1.ListOptions) (*wfv1.WorkflowList, error) {
+func (k *kubeLister) ListWorkflows(ctx context.Context, namespace, nameFilter, createdAfter, finishedBefore string, sort string, orderBy string, listOptions metav1.ListOptions) (*wfv1.WorkflowList, error) {
 	wfList, err := k.wfClient.ArgoprojV1alpha1().Workflows(namespace).List(ctx, listOptions)
 	if err != nil {
 		return nil, err

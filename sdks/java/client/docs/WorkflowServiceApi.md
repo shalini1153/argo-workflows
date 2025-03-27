@@ -325,7 +325,7 @@ Name | Type | Description  | Notes
 
 <a name="workflowServiceListWorkflows"></a>
 # **workflowServiceListWorkflows**
-> IoArgoprojWorkflowV1alpha1WorkflowList workflowServiceListWorkflows(namespace, listOptionsLabelSelector, listOptionsFieldSelector, listOptionsWatch, listOptionsAllowWatchBookmarks, listOptionsResourceVersion, listOptionsResourceVersionMatch, listOptionsTimeoutSeconds, listOptionsLimit, listOptionsContinue, listOptionsSendInitialEvents, fields, nameFilter, createdAfter, finishedBefore)
+> IoArgoprojWorkflowV1alpha1WorkflowList workflowServiceListWorkflows(namespace, listOptionsLabelSelector, listOptionsFieldSelector, listOptionsWatch, listOptionsAllowWatchBookmarks, listOptionsResourceVersion, listOptionsResourceVersionMatch, listOptionsTimeoutSeconds, listOptionsLimit, listOptionsContinue, listOptionsSendInitialEvents, fields, nameFilter, createdAfter, finishedBefore, sort, orderBy)
 
 
 
@@ -366,8 +366,10 @@ public class Example {
     String nameFilter = "nameFilter_example"; // String | Filter type used for name filtering. Exact | Contains | Prefix. Default to Exact.
     String createdAfter = "createdAfter_example"; // String | 
     String finishedBefore = "finishedBefore_example"; // String | 
+    String sort = "sort_example"; // String | 
+    String orderBy = "orderBy_example"; // String | 
     try {
-      IoArgoprojWorkflowV1alpha1WorkflowList result = apiInstance.workflowServiceListWorkflows(namespace, listOptionsLabelSelector, listOptionsFieldSelector, listOptionsWatch, listOptionsAllowWatchBookmarks, listOptionsResourceVersion, listOptionsResourceVersionMatch, listOptionsTimeoutSeconds, listOptionsLimit, listOptionsContinue, listOptionsSendInitialEvents, fields, nameFilter, createdAfter, finishedBefore);
+      IoArgoprojWorkflowV1alpha1WorkflowList result = apiInstance.workflowServiceListWorkflows(namespace, listOptionsLabelSelector, listOptionsFieldSelector, listOptionsWatch, listOptionsAllowWatchBookmarks, listOptionsResourceVersion, listOptionsResourceVersionMatch, listOptionsTimeoutSeconds, listOptionsLimit, listOptionsContinue, listOptionsSendInitialEvents, fields, nameFilter, createdAfter, finishedBefore, sort, orderBy);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling WorkflowServiceApi#workflowServiceListWorkflows");
@@ -399,6 +401,8 @@ Name | Type | Description  | Notes
  **nameFilter** | **String**| Filter type used for name filtering. Exact | Contains | Prefix. Default to Exact. | [optional]
  **createdAfter** | **String**|  | [optional]
  **finishedBefore** | **String**|  | [optional]
+ **sort** | **String**|  | [optional]
+ **orderBy** | **String**|  | [optional]
 
 ### Return type
 

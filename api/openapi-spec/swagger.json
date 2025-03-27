@@ -3019,6 +3019,16 @@
             "type": "string",
             "name": "finishedBefore",
             "in": "query"
+          },
+          {
+            "type": "string",
+            "name": "sort",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "name": "orderBy",
+            "in": "query"
           }
         ],
         "responses": {

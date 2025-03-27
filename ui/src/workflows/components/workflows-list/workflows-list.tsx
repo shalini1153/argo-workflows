@@ -94,6 +94,8 @@ export function WorkflowsList({match, location, history}: RouteComponentProps<an
     const [nameFilter, setNameFilter] = useState<NameFilterKeys>(() => {
         return NAME_FILTER_KEYS.find(key => queryParams.get(key)) || 'Contains';
     });
+    const [sortBy, setSortBy] = useState<string>();
+    const [orderBy, setOrderBy] = useState<string>();
 
     const batchActionDisabled = useMemo<Actions.OperationDisabled>(() => {
         const nowDisabled: any = {...allBatchActionsEnabled};
@@ -157,12 +159,18 @@ export function WorkflowsList({match, location, history}: RouteComponentProps<an
         if (finishedBefore) {
             params.append('finishedBefore', finishedBefore.toISOString());
         }
+        if (sortBy) {
+            params.append('sortBy', sortBy);
+        }
+        if (orderBy) {
+            params.append('orderBy', orderBy);
+        }
         history.push(historyUrl('workflows' + (nsUtils.getManagedNamespace() ? '' : '/{namespace}'), {namespace, extraSearchParams: params}));
-    }, [namespace, phases.toString(), labels.toString(), pagination.limit, pagination.offset, nameValue, nameFilter, createdAfter, finishedBefore]); // referential equality, so use values, not refs
+    }, [namespace, phases.toString(), labels.toString(), pagination.limit, pagination.offset, nameValue, nameFilter, createdAfter, finishedBefore, sortBy, orderBy]); // referential equality, so use values, not refs
 
     useEffect(() => {
         const listWatch = new ListWatch(
-            () => services.workflows.list(namespace, phases, labels, pagination, undefined, nameValue, nameFilter, createdAfter, finishedBefore),
+            () => services.workflows.list(namespace, phases, labels, pagination, undefined, nameValue, nameFilter, createdAfter, finishedBefore, sortBy, orderBy),
             (resourceVersion: string) => services.workflows.watchFields({namespace, phases, labels, resourceVersion}),
             metadata => {
                 setError(null);
@@ -171,8 +179,8 @@ export function WorkflowsList({match, location, history}: RouteComponentProps<an
             },
             () => setError(null),
             newWorkflows => setWorkflows([...newWorkflows]),
-            err => setError(err),
-            sortByYouth
+            err => setError(err)
+            // sortByYouth
         );
         listWatch.start();
 
@@ -180,7 +188,7 @@ export function WorkflowsList({match, location, history}: RouteComponentProps<an
             clearSelectedWorkflows();
             listWatch.stop();
         };
-    }, [namespace, phases.toString(), labels.toString(), pagination.limit, pagination.offset, nameValue, nameFilter, createdAfter, finishedBefore]); // referential equality, so use values, not refs
+    }, [namespace, phases.toString(), labels.toString(), pagination.limit, pagination.offset, nameValue, nameFilter, createdAfter, finishedBefore, sortBy, orderBy]); // referential equality, so use values, not refs
 
     useCollectEvent('openedWorkflowList');
 
@@ -285,20 +293,57 @@ export function WorkflowsList({match, location, history}: RouteComponentProps<an
                                         />
                                     </div>
                                     <div className='row small-11'>
-                                        <div className='columns small-2'>NAME</div>
+                                        <div
+                                            className='columns small-2'
+                                            style={{cursor: 'pointer'}}
+                                            onClick={() => {
+                                                setSortBy('name');
+                                                setOrderBy(sortBy === 'name' && orderBy === 'asc' ? 'desc' : 'asc');
+                                            }}>
+                                            NAME
+                                            {sortBy === 'name' && orderBy === 'asc' ? (
+                                                <i className='fa fa-caret-down' />
+                                            ) : sortBy === 'name' && orderBy === 'desc' ? (
+                                                <i className='fa fa-caret-up' />
+                                            ) : null}
+                                        </div>
                                         <div className='columns small-1'>NAMESPACE</div>
                                         <div className='columns small-1'>
                                             STARTED{' '}
                                             <TimestampSwitch storedDisplayISOFormat={storedDisplayISOFormatStart} setStoredDisplayISOFormat={setStoredDisplayISOFormatStart} />
                                         </div>
-                                        <div className='columns small-1'>
+                                        <div
+                                            className='columns small-1'
+                                            style={{cursor: 'pointer'}}
+                                            onClick={() => {
+                                                setSortBy('finishedAt');
+                                                setOrderBy(sortBy === 'finishedAt' && orderBy === 'asc' ? 'desc' : 'asc');
+                                            }}>
                                             FINISHED{' '}
+                                            {sortBy === 'finished' && orderBy === 'asc' ? (
+                                                <i className='fa fa-caret-down' />
+                                            ) : sortBy === 'finished' && orderBy === 'desc' ? (
+                                                <i className='fa fa-caret-up' />
+                                            ) : null}
                                             <TimestampSwitch
                                                 storedDisplayISOFormat={storedDisplayISOFormatFinished}
                                                 setStoredDisplayISOFormat={setStoredDisplayISOFormatFinished}
                                             />
                                         </div>
-                                        <div className='columns small-1'>DURATION</div>
+                                        <div
+                                            className='columns small-1'
+                                            style={{cursor: 'pointer'}}
+                                            onClick={() => {
+                                                setSortBy('duration');
+                                                setOrderBy(sortBy === 'duration' && orderBy === 'asc' ? 'desc' : 'asc');
+                                            }}>
+                                            DURATION
+                                            {sortBy === 'duration' && orderBy === 'asc' ? (
+                                                <i className='fa fa-caret-down' />
+                                            ) : sortBy === 'duration' && orderBy === 'desc' ? (
+                                                <i className='fa fa-caret-up' />
+                                            ) : null}
+                                        </div>
                                         <div className='columns small-1'>PROGRESS</div>
                                         <div className='columns small-2'>MESSAGE</div>
                                         <div className='columns small-1'>DETAILS</div>

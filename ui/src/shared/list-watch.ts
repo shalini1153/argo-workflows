@@ -45,7 +45,7 @@ export class ListWatch<T extends Resource> {
             watch,
             onOpen,
             e => {
-                this.items = mergeItem(e.object, e.type, this.items).sort(sorter);
+                this.items = mergeItem(e.object, e.type, this.items);
                 onChange(this.items, e.object, e.type);
             },
             onError
@@ -58,7 +58,7 @@ export class ListWatch<T extends Resource> {
         this.stop();
         this.list()
             .then(x => {
-                this.items = (x.items || []).sort(this.sorter);
+                this.items = x.items || [];
                 this.onLoad(x.metadata);
                 this.onChange(this.items);
                 this.retryWatch.start(x.metadata.resourceVersion);

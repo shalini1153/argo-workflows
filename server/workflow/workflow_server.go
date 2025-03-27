@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"sort"
 	"sync"
 	"time"
 
@@ -180,7 +179,7 @@ func (s *workflowServer) ListWorkflows(ctx context.Context, req *workflowpkg.Wor
 	}
 	s.instanceIDService.With(&listOption)
 
-	options, err := sutils.BuildListOptions(listOption, req.Namespace, "", req.NameFilter, req.CreatedAfter, req.FinishedBefore)
+	options, err := sutils.BuildListOptions(listOption, req.Namespace, "", req.NameFilter, req.CreatedAfter, req.FinishedBefore, req.Sort, req.OrderBy)
 
 	if err != nil {
 		return nil, err
@@ -209,7 +208,7 @@ func (s *workflowServer) ListWorkflows(ctx context.Context, req *workflowpkg.Wor
 	// first fetch live workflows
 	liveWfList := &wfv1.WorkflowList{}
 	if liveWfCount > 0 && (options.Limit == 0 || options.Offset < int(liveWfCount)) {
-		liveWfList, err = s.wfLister.ListWorkflows(ctx, req.Namespace, req.NameFilter, req.CreatedAfter, req.FinishedBefore, listOption)
+		liveWfList, err = s.wfLister.ListWorkflows(ctx, req.Namespace, req.NameFilter, req.CreatedAfter, req.FinishedBefore, req.Sort, req.OrderBy, listOption)
 		if err != nil {
 			return nil, sutils.ToStatusError(err, codes.Internal)
 		}
@@ -264,7 +263,7 @@ func (s *workflowServer) ListWorkflows(ctx context.Context, req *workflowpkg.Wor
 	}
 
 	// we make no promises about the overall list sorting, we just sort each page
-	sort.Sort(wfs)
+	//sort.Sort(wfs)
 
 	res := &wfv1.WorkflowList{ListMeta: meta, Items: wfs}
 	newRes := &wfv1.WorkflowList{}

@@ -13,6 +13,8 @@ export function queryParams(filter: {
     finishedBefore?: Date;
     pagination?: Pagination;
     resourceVersion?: string;
+    sortBy?: string;
+    orderBy?: string;
 }) {
     const queryParams: string[] = [];
     const fieldSelector = fieldSelectorParams(filter.namespace, filter.name);
@@ -48,6 +50,12 @@ export function queryParams(filter: {
     }
     if (filter.finishedBefore) {
         queryParams.push(`finishedBefore=${filter.finishedBefore.toISOString()}`);
+    }
+    if (filter.sortBy) {
+        queryParams.push(`sort=${filter.sortBy}`);
+    }
+    if (filter.orderBy) {
+        queryParams.push(`orderBy=${filter.orderBy}`);
     }
     return queryParams;
 }
