@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"sort"
 	"testing"
 	"time"
 
@@ -147,6 +148,25 @@ func TestStoreOperation(t *testing.T) {
 		require.NoError(t, err)
 		assert.Len(t, wfList.Items, 1)
 	})
+
+	t.Run("TestListWorkflows sort and order are passed", func(t *testing.T) {
+		wfList, err := store.ListWorkflows(context.Background(), "argo", "Prefix", "", "", "name", "desc", metav1.ListOptions{Limit: 11, FieldSelector: "metadata.name=workflow-"})
+		require.NoError(t, err)
+
+		sortedItems := getSortedWorkflowsByName(wfList.Items, false)
+
+		assert.EqualValues(t, wfList.Items, sortedItems, "Workflows should be sorted by name in descending order")
+	})
+
+	t.Run("TestListWorkflows sort is passed and order is not passed", func(t *testing.T) {
+		wfList, err := store.ListWorkflows(context.Background(), "argo", "Prefix", "", "", "name", "", metav1.ListOptions{Limit: 11, FieldSelector: "metadata.name=workflow-"})
+		require.NoError(t, err)
+
+		sortedItems := getSortedWorkflowsByName(wfList.Items, true)
+
+		assert.EqualValues(t, wfList.Items, sortedItems, "Workflows should be sorted by name in ascending order")
+	})
+
 	t.Run("TestListWorkflows namePrefix", func(t *testing.T) {
 		wfList, err := store.ListWorkflows(context.Background(), "argo", "Prefix", "", "", "", "", metav1.ListOptions{Limit: 5, FieldSelector: "metadata.name=flow"})
 		require.NoError(t, err)
@@ -235,4 +255,18 @@ func generateWorkflow(uid int) *wfv1.Workflow {
 			"test-label": fmt.Sprintf("label-%d", uid),
 		},
 	}, Status: wfv1.WorkflowStatus{FinishedAt: metav1.NewTime(time.Now().Add(-24 * time.Duration(uid) * time.Hour))}}
+}
+
+func getSortedWorkflowsByName(workflows []wfv1.Workflow, isAscending bool) []wfv1.Workflow {
+	sortedItems := make([]wfv1.Workflow, len(workflows))
+	copy(sortedItems, workflows)
+
+	sort.Slice(sortedItems, func(i, j int) bool {
+		if isAscending {
+			return sortedItems[i].Name < sortedItems[j].Name
+		}
+		return sortedItems[i].Name > sortedItems[j].Name
+	})
+
+	return sortedItems
 }
