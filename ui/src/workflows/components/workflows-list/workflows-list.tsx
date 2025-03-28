@@ -315,11 +315,7 @@ export function WorkflowsList({match, location, history}: RouteComponentProps<an
                                             </ColumnHeader>
                                             <TimestampSwitch storedDisplayISOFormat={storedDisplayISOFormatStart} setStoredDisplayISOFormat={setStoredDisplayISOFormatFinished} />
                                         </div>
-                                        <div className='columns small-1'>
-                                            <ColumnHeader setOrderBy={setOrderBy} setSortBy={setSortBy} item='duration' sortBy={sortBy} orderBy={orderBy}>
-                                                DURATION
-                                            </ColumnHeader>
-                                        </div>
+                                        <div className='columns small-1'>DURATION</div>
                                         <div className='columns small-1'>PROGRESS</div>
                                         <div className='columns small-2'>MESSAGE</div>
                                         <div className='columns small-1'>DETAILS</div>
