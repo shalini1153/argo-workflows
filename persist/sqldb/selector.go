@@ -1,6 +1,7 @@
 package sqldb
 
 import (
+	"strings"
 	"time"
 
 	"github.com/upper/db/v4"
@@ -8,6 +9,17 @@ import (
 	"github.com/argoproj/argo-workflows/v3/server/utils"
 	"github.com/argoproj/argo-workflows/v3/util/sqldb"
 )
+
+var sortOptions = map[string]string{
+	"startedat":  "startedat",
+	"finishedat": "finishedat",
+	"name":       "name",
+}
+
+var orderByOptions = map[string]string{
+	"asc":  "asc",
+	"desc": "desc",
+}
 
 func BuildArchivedWorkflowSelector(selector db.Selector, tableName, labelTableName string, t sqldb.DBType, options utils.ListOptions, count bool) (db.Selector, error) {
 	selector = selector.
@@ -98,16 +110,17 @@ func BuildWorkflowSelector(in string, inArgs []any, tableName, labelTableName st
 		return out, outArgs, nil
 	}
 
-	/*if options.StartedAtAscending {
-		out += " order by startedat asc"
-	} else {
-		out += " order by startedat desc"
-	}*/
-	if options.Sort != "" {
-		out += " order by " + options.Sort + " " + options.OrderBy
-	} else {
-		out += " order by startedat desc"
+	sortBy, exists := sortOptions[strings.ToLower(options.Sort)]
+	if !exists {
+		sortBy = "startedat"
 	}
+
+	orderBy, exists := orderByOptions[strings.ToLower(options.OrderBy)]
+	if !exists {
+		orderBy = "desc"
+	}
+
+	out += " order by " + sortBy + " " + orderBy
 
 	// If we were passed 0 as the limit, then we should load all available archived workflows
 	// to match the behavior of the `List` operations in the Kubernetes API
