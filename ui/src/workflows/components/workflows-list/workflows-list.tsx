@@ -14,7 +14,7 @@ import {TimestampSwitch} from '../../../shared/components/timestamp';
 import {ZeroState} from '../../../shared/components/zero-state';
 import {Context} from '../../../shared/context';
 import {historyUrl} from '../../../shared/history';
-import {ListWatch, sortByYouth} from '../../../shared/list-watch';
+import {ListWatch} from '../../../shared/list-watch';
 import * as models from '../../../shared/models';
 import {isArchivedWorkflow, Workflow, WorkflowPhase, WorkflowPhases} from '../../../shared/models';
 import * as nsUtils from '../../../shared/namespaces';

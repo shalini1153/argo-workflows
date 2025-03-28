@@ -21,7 +21,6 @@ export class ListWatch<T extends Resource> {
     private readonly onLoad: (metadata: kubernetes.ListMeta) => void;
     private readonly onChange: (items: T[], item?: T, type?: Type) => void;
     private readonly onError: (error: Error) => void;
-    private readonly sorter: (a: T, b: T) => number;
     private items: T[];
     private retryWatch: RetryWatch<T>;
     private timeout: any;
@@ -40,7 +39,6 @@ export class ListWatch<T extends Resource> {
         this.list = list;
         this.onChange = onChange;
         this.onError = onError;
-        this.sorter = sorter;
         this.retryWatch = new RetryWatch<T>(
             watch,
             onOpen,
