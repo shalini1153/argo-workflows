@@ -185,7 +185,6 @@ export function WorkflowsList({match, location, history}: RouteComponentProps<an
             () => setError(null),
             newWorkflows => setWorkflows([...newWorkflows]),
             err => setError(err)
-            // sortByYouth
         );
         listWatch.start();
 
@@ -305,7 +304,9 @@ export function WorkflowsList({match, location, history}: RouteComponentProps<an
                                         </div>
                                         <div className='columns small-1'>NAMESPACE</div>
                                         <div className='columns small-1'>
-                                            STARTED{' '}
+                                            <ColumnHeader setOrderBy={setOrderBy} setSortBy={setSortBy} item='startedAt' sortBy={sortBy} orderBy={orderBy}>
+                                                STARTED{' '}
+                                            </ColumnHeader>
                                             <TimestampSwitch storedDisplayISOFormat={storedDisplayISOFormatStart} setStoredDisplayISOFormat={setStoredDisplayISOFormatStart} />
                                         </div>
                                         <div className='columns small-1'>

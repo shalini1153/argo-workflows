@@ -22,8 +22,11 @@ export const ColumnHeader = ({sortBy, orderBy, setSortBy, setOrderBy, item, chil
             }}
             onClick={() => handleOnClick()}>
             {children}
-            {sortBy === item && orderBy === 'asc' && <i className='fa fa-caret-down' />}
-            {sortBy === item && orderBy === 'desc' && <i className='fa fa-caret-up' />}
+            <span style={{marginLeft: '5px'}}>
+                {sortBy !== item && <i className='fa fa-sort' />}
+                {sortBy === item && orderBy === 'asc' && <i className='fa fa-sort-asc' />}
+                {sortBy === item && orderBy === 'desc' && <i className='fa fa-sort-desc' />}
+            </span>
         </span>
     );
 };

@@ -8,10 +8,6 @@ interface Resource {
 }
 
 type Type = 'ADDED' | 'MODIFIED' | 'DELETED' | 'ERROR';
-type Sorter = (a: Resource, b: Resource) => number;
-
-// put the youngest at the start of the list
-export const sortByYouth: Sorter = (a: Resource, b: Resource) => b.metadata.creationTimestamp.localeCompare(a.metadata.creationTimestamp);
 
 /**
  * ListWatch allows you to start watching for changes, automatically reconnecting on error.
