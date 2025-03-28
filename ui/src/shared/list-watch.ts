@@ -32,8 +32,7 @@ export class ListWatch<T extends Resource> {
         onLoad: (metadata: kubernetes.ListMeta) => void, // called when the list is loaded
         onOpen: () => void, //  called, when watches is re-established after error,  so should clear any errors
         onChange: (items: T[], item?: T, type?: Type) => void, // called whenever items change, any users that changes state should use [...items]
-        onError: (error: Error) => void, // called on any error
-        sorter: Sorter = sortByYouth // show the youngest first by default
+        onError: (error: Error) => void // called on any error
     ) {
         this.onLoad = onLoad;
         this.list = list;

@@ -29,6 +29,7 @@ import {NAME_FILTER_KEYS, WorkflowFilters, type NameFilterKeys} from '../workflo
 import {WorkflowsRow} from '../workflows-row/workflows-row';
 import {WorkflowsSummaryContainer} from '../workflows-summary-container/workflows-summary-container';
 import {WorkflowsToolbar} from '../workflows-toolbar/workflows-toolbar';
+import {ColumnHeader} from './column-header';
 
 import './workflows-list.scss';
 
@@ -94,8 +95,12 @@ export function WorkflowsList({match, location, history}: RouteComponentProps<an
     const [nameFilter, setNameFilter] = useState<NameFilterKeys>(() => {
         return NAME_FILTER_KEYS.find(key => queryParams.get(key)) || 'Contains';
     });
-    const [sortBy, setSortBy] = useState<string>();
-    const [orderBy, setOrderBy] = useState<string>();
+    const [sortBy, setSortBy] = useState<string>(() => {
+        return queryParams.get('sortBy');
+    });
+    const [orderBy, setOrderBy] = useState<string>(() => {
+        return queryParams.get('orderBy');
+    });
 
     const batchActionDisabled = useMemo<Actions.OperationDisabled>(() => {
         const nowDisabled: any = {...allBatchActionsEnabled};
@@ -293,56 +298,26 @@ export function WorkflowsList({match, location, history}: RouteComponentProps<an
                                         />
                                     </div>
                                     <div className='row small-11'>
-                                        <div
-                                            className='columns small-2'
-                                            style={{cursor: 'pointer'}}
-                                            onClick={() => {
-                                                setSortBy('name');
-                                                setOrderBy(sortBy === 'name' && orderBy === 'asc' ? 'desc' : 'asc');
-                                            }}>
-                                            NAME
-                                            {sortBy === 'name' && orderBy === 'asc' ? (
-                                                <i className='fa fa-caret-down' />
-                                            ) : sortBy === 'name' && orderBy === 'desc' ? (
-                                                <i className='fa fa-caret-up' />
-                                            ) : null}
+                                        <div className='columns small-2'>
+                                            <ColumnHeader setOrderBy={setOrderBy} setSortBy={setSortBy} item='name' sortBy={sortBy} orderBy={orderBy}>
+                                                NAME
+                                            </ColumnHeader>
                                         </div>
                                         <div className='columns small-1'>NAMESPACE</div>
                                         <div className='columns small-1'>
                                             STARTED{' '}
                                             <TimestampSwitch storedDisplayISOFormat={storedDisplayISOFormatStart} setStoredDisplayISOFormat={setStoredDisplayISOFormatStart} />
                                         </div>
-                                        <div
-                                            className='columns small-1'
-                                            style={{cursor: 'pointer'}}
-                                            onClick={() => {
-                                                setSortBy('finishedAt');
-                                                setOrderBy(sortBy === 'finishedAt' && orderBy === 'asc' ? 'desc' : 'asc');
-                                            }}>
-                                            FINISHED{' '}
-                                            {sortBy === 'finished' && orderBy === 'asc' ? (
-                                                <i className='fa fa-caret-down' />
-                                            ) : sortBy === 'finished' && orderBy === 'desc' ? (
-                                                <i className='fa fa-caret-up' />
-                                            ) : null}
-                                            <TimestampSwitch
-                                                storedDisplayISOFormat={storedDisplayISOFormatFinished}
-                                                setStoredDisplayISOFormat={setStoredDisplayISOFormatFinished}
-                                            />
+                                        <div className='columns small-1'>
+                                            <ColumnHeader setOrderBy={setOrderBy} setSortBy={setSortBy} item='finishedAt' sortBy={sortBy} orderBy={orderBy}>
+                                                FINISHED
+                                            </ColumnHeader>
+                                            <TimestampSwitch storedDisplayISOFormat={storedDisplayISOFormatStart} setStoredDisplayISOFormat={setStoredDisplayISOFormatFinished} />
                                         </div>
-                                        <div
-                                            className='columns small-1'
-                                            style={{cursor: 'pointer'}}
-                                            onClick={() => {
-                                                setSortBy('duration');
-                                                setOrderBy(sortBy === 'duration' && orderBy === 'asc' ? 'desc' : 'asc');
-                                            }}>
-                                            DURATION
-                                            {sortBy === 'duration' && orderBy === 'asc' ? (
-                                                <i className='fa fa-caret-down' />
-                                            ) : sortBy === 'duration' && orderBy === 'desc' ? (
-                                                <i className='fa fa-caret-up' />
-                                            ) : null}
+                                        <div className='columns small-1'>
+                                            <ColumnHeader setOrderBy={setOrderBy} setSortBy={setSortBy} item='duration' sortBy={sortBy} orderBy={orderBy}>
+                                                DURATION
+                                            </ColumnHeader>
                                         </div>
                                         <div className='columns small-1'>PROGRESS</div>
                                         <div className='columns small-2'>MESSAGE</div>
